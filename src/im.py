@@ -1,7 +1,7 @@
 """
 --------------------------------------------------
 Auther:                           Sytwu(111550159)
-Lastest Edit:                     2024/05/18 03:16
+Lastest Edit:                     2024/05/18 03:21
 Functions:
 read                                          Done
 norm                                          Done
@@ -221,7 +221,7 @@ def auto_crop(img,hi=500,wi=500):
     return img
 
 if __name__ == '__main__':
-    path = '15.jpg'
+    path = 'test.jpg'
     img = read(path)
     img1 = resize(img)
     img2 = gray(img)
