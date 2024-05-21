@@ -1,7 +1,7 @@
 """
 --------------------------------------------------
 Auther:                           Sytwu(111550159)
-Lastest Edit:                     2024/05/18 03:21
+Lastest Edit:                     2024/05/21 13:30
 Functions:
 read                                          Done
 norm                                          Done
@@ -15,26 +15,24 @@ low_pass                                      Done
 high_pass                                     Done
 edge                                          Done
 Hist_equal                                    Done
-auto_crop                                  Haven't
+auto_crop                                     Done
+plot_heatmap                   (Haven't test) Done
 
-requirement.txt                            Haven't
+requirement.txt                               Done
 README.md                                  Haven't
 
 --------------------------------------------------
 """
 
-import math
 import numpy as np
 import matplotlib.pyplot as plt
 import skimage.transform as sktr
 import cv2
 import os
-from numpy.fft import fft2, ifft2, fftshift, ifftshift
 import skimage as sk
 import skimage.io as skio
 from scipy import signal
-import PIL
-from rembg import remove
+from PIL import Image
 
 def read(path):
     """ read image from path
@@ -156,7 +154,8 @@ def gray(img):
     Return:
         gray_img(np.ndarray(np.float64))
     """
-    gray_img = np.mean(img,axis=2)
+    if len(img.shape)!=2:
+        gray_img = np.mean(img,axis=2)
     return gray_img
 
 def low_pass(img,ksize=21,sigma=10):
@@ -217,8 +216,55 @@ def Hist_equal(img):
     HE_img = sk.img_as_float(HE_img)
     return HE_img
 
-def auto_crop(img,hi=500,wi=500):
-    return img
+def auto_crop(img,h=500,w=500):
+    """ resize image and crop the most important part
+
+    Args:
+        img (np.ndarray(np.float64))
+    
+    Return:
+        auto_crop_img(np.ndarray(np.float64))
+    """
+    hi, wi = img.shape[:2]
+    ratio = h/w
+    ratioi = hi/wi
+    
+    h_new, w_new = h, w
+    if ratioi > ratio:
+        h_new = int(w_new*ratioi)
+    else:
+        w_new = int(h_new/ratioi)
+    resized_img = sktr.resize(img,(h_new,w_new))
+    
+    edge_img = edge(resized_img)
+    filter1 = np.ones((h,w))
+    importance = signal.convolve2d(edge_img,filter1,mode='valid')
+    h0,w0 = np.unravel_index(np.argmax(importance,axis=None),importance.shape)
+    auto_crop_img = resized_img[h0:h0+h,w0:w0+w]
+    return auto_crop_img
+
+def plot_heatmap(heatmap,img,title=''):
+    """ show the heatmap and original image
+
+    Args:
+        heatmap (np.ndarray(np.float64))
+        img (np.ndarray(np.float64))
+        title (str)
+    
+    Return:
+        auto_crop_img(np.ndarray(np.float64))
+    """
+    heatmap = np.maximum(heatmap, 0)
+    heatmap /= np.max(heatmap)
+    heatmap = sktr.resize(heatmap, (img.shape[1], img.shape[0]))
+    
+    fig, ax = plt.subplots()
+    plt.axis('off')
+    if title!='':
+        plt.title(title)
+    ax.imshow(img, alpha=0.6)
+    ax.imshow(heatmap, cmap='jet', alpha=0.4)
+    plt.show()
 
 if __name__ == '__main__':
     path = 'test.jpg'
@@ -228,8 +274,8 @@ if __name__ == '__main__':
     img3 = low_pass(img)
     img4 = high_pass(img)
     img5 = edge(img)
-    img6 = auto_crop(img)
-    img7 = Hist_equal(img)
+    img6 = Hist_equal(img)
+    img7 = auto_crop(img)
     
     show(img)
     show(img1)
