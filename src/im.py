@@ -35,7 +35,7 @@ from scipy import signal
 from PIL import Image
 
 def read(path):
-    """ read image from path
+    """ read an image from the path
     
     Args:
         path (str)
@@ -61,7 +61,7 @@ def norm(img):
     return norm_img
 
 def show(img,title='',is_norm=False):
-    """ read image from path
+    """ show an image
     
     Args:
         img (np.ndarray(np.float64))
@@ -80,7 +80,7 @@ def show(img,title='',is_norm=False):
     plt.show()
     
 def show_imgs(imgs,titles=[],is_norm=False):
-    """ read images from path
+    """ show images
     
     Args:
         img (list of np.ndarray(np.float64)s)
@@ -105,7 +105,7 @@ def show_imgs(imgs,titles=[],is_norm=False):
     plt.show()
     
 def save(img,folder='../result',filename='temp_image.jpg',is_norm=False):
-    """ save image in path
+    """ save an image in the path
 
     Args:
         img (np.ndarray(np.float64))
@@ -122,7 +122,7 @@ def save(img,folder='../result',filename='temp_image.jpg',is_norm=False):
     skio.imsave(path,img)
 
 def save_imgs(imgs,folders='../result',filenames='temp_image.jpg',is_norm=False):
-    """ save image in path
+    """ save images in path
 
     Args:
         img (list of np.ndarray(np.float64)s)
@@ -134,7 +134,7 @@ def save_imgs(imgs,folders='../result',filenames='temp_image.jpg',is_norm=False)
         save(img,folder,filename,is_norm)
         
 def resize(img,h=500,w=500):
-    """ resize image with a brutal method
+    """ resize an image with a brutal method
 
     Args:
         img (np.ndarray(np.float64))
@@ -146,7 +146,7 @@ def resize(img,h=500,w=500):
     return resized_img
 
 def gray(img):
-    """ compute gray image
+    """ compute a gray image
 
     Args:
         img (np.ndarray(np.float64))
@@ -159,7 +159,7 @@ def gray(img):
     return gray_img
 
 def low_pass(img,ksize=21,sigma=10):
-    """ compute low-pass image with the Gaussian Filter
+    """ compute a low-pass image with the Gaussian Filter
 
     Args:
         img (np.ndarray(np.float64))
@@ -171,7 +171,7 @@ def low_pass(img,ksize=21,sigma=10):
     return blur_img
 
 def high_pass(img,ksize=21,sigma=10):
-    """ compute low-pass image (image = high-pass + low-pass)
+    """ compute a high-pass image (image = high-pass + low-pass)
 
     Args:
         img (np.ndarray(np.float64))
@@ -217,7 +217,7 @@ def Hist_equal(img):
     return HE_img
 
 def auto_crop(img,h=500,w=500):
-    """ resize image and crop the most important part
+    """ resize an image and crop the most important part of it
 
     Args:
         img (np.ndarray(np.float64))
