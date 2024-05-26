@@ -8,6 +8,7 @@ import pandas as pd
 import numpy as np
 import cv2
 import os
+import random
 
 def read_image(gray_img = False, coordinate = False):
     dataset = []
@@ -16,8 +17,10 @@ def read_image(gray_img = False, coordinate = False):
     for folder_path in folder_paths:
         floder_name = folder_path.split('/')[-1]
         df = pd.read_csv(f'../data/csv_data/{floder_name}.csv')
-        for filename in os.listdir(folder_path):
-            building_info = df.iloc[int(filename.split('.')[0])-1]
+        i = 0
+        for filename in df['picture']:
+            building_info = df.iloc[i]
+            i = i + 1
             filepath = os.path.join(folder_path, filename)
             if gray_img:
                 image_array = np.array(cv2.imread(filepath, cv2.IMREAD_GRAYSCALE))
@@ -29,6 +32,7 @@ def read_image(gray_img = False, coordinate = False):
                 dataset.append((image_array, building_info['year']))
     # train test split
     SPLIT_RATIO = 0.7
+    random.shuffle(dataset)
     train_dataset = dataset[:int(SPLIT_RATIO * len(dataset))]
     test_dataset = dataset[int(SPLIT_RATIO * len(dataset)):]
 
