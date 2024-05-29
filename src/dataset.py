@@ -30,6 +30,7 @@ def read_image(gray_img = False, coordinate = False):
                 dataset.append((image_array, building_info['year'], building_info['longitude'], building_info['latitude']))
             else:
                 dataset.append((image_array, building_info['year']))
+            print(building_info['year'], building_info['longitude'], building_info['latitude'])
     # train test split
     SPLIT_RATIO = 0.7
     random.shuffle(dataset)
