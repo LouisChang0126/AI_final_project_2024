@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import csv
 import time
 
-genai.configure(api_key='AIzaSyDgzCCY2P-wWOMEr6M2OyMNIOpuWEpToW8')
+genai.configure(api_key='Your_API_KEY')
 # The Gemini 1.5 models are versatile and work with both text-only and multimodal prompts
 model = genai.GenerativeModel('gemini-1.5-flash')
 
